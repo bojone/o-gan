@@ -200,7 +200,7 @@ def sample_ae(path, n=8):
                 z_sample = e_model.predict(np.array(x_sample))
                 z_sample -= (z_sample).mean(axis=1, keepdims=True)
                 z_sample /= (z_sample).std(axis=1, keepdims=True)
-                x_sample = g_model.predict(z_sample * 0.9)
+                x_sample = g_model.predict(z_sample * 0.8)
             digit = x_sample[0]
             figure[i * img_dim:(i + 1) * img_dim,
                    j * img_dim:(j + 1) * img_dim] = digit
