@@ -70,6 +70,30 @@ class img_generator:
                     X = []
 
 
+class ScaleShift(Layer):
+    """平移缩放
+    """
+    def __init__(self, **kwargs):
+        super(ScaleShift, self).__init__(**kwargs)
+    def call(self, inputs):
+        z, beta, gamma = inputs
+        for i in range(K.ndim(z) - 2):
+            beta = K.expand_dims(beta, 1)
+            gamma = K.expand_dims(gamma, 1)
+        return z * (gamma + 1) + beta
+
+
+def SelfModulatedBatchNormalization(h, c):
+    num_hidden = z_dim
+    dim = K.int_shape(h)[-1]
+    h = BatchNormalization(center=False, scale=False)(h)
+    beta = Dense(num_hidden, activation='relu')(c)
+    beta = Dense(dim)(beta)
+    gamma = Dense(num_hidden, activation='relu')(c)
+    gamma = Dense(dim)(gamma)
+    return ScaleShift()([h, beta, gamma])
+
+
 # 编码器
 x_in = Input(shape=(img_dim, img_dim, 3))
 x = x_in
@@ -91,30 +115,6 @@ x = Dense(z_dim,
 
 e_model = Model(x_in, x)
 e_model.summary()
-
-
-class ScaleShift(Layer):
-    """平移缩放
-    """
-    def __init__(self, **kwargs):
-        super(ScaleShift, self).__init__(**kwargs)
-    def call(self, inputs):
-        z, beta, gamma = inputs
-        for i in range(K.ndim(z) - 2):
-            beta = K.expand_dims(beta, 1)
-            gamma = K.expand_dims(gamma, 1)
-        return z * (gamma + 1) + beta
-
-
-def SelfModulatedBatchNormalization(h, c):
-    num_hidden = z_dim
-    dim = K.int_shape(z)[-1]
-    h = BatchNormalization(center=False, scale=False)(h)
-    beta = Dense(num_hidden, activation='relu')(c)
-    beta = Dense(dim)(beta)
-    gamma = Dense(num_hidden, activation='relu')(c)
-    gamma = Dense(dim)(gamma)
-    return ScaleShift()([h, beta, gamma])
 
 
 # 生成器
