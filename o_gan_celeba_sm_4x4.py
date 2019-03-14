@@ -106,13 +106,13 @@ class ScaleShift(Layer):
         return z * (gamma + 1) + beta
 
 
-def SelfModulatedBatchNormalization(h, z_in):
+def SelfModulatedBatchNormalization(h, c):
     num_hidden = z_dim
     dim = K.int_shape(z)[-1]
     h = BatchNormalization(center=False, scale=False)(h)
-    beta = Dense(num_hidden, activation='relu')(z_in)
+    beta = Dense(num_hidden, activation='relu')(c)
     beta = Dense(dim)(beta)
-    gamma = Dense(num_hidden, activation='relu')(z_in)
+    gamma = Dense(num_hidden, activation='relu')(c)
     gamma = Dense(dim)(gamma)
     return ScaleShift()([h, beta, gamma])
 
