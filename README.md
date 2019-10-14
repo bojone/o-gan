@@ -16,7 +16,7 @@ Python 2.7 + Tensorflow 1.8  + Keras 2.2.4
 <br><img src="https://kexue.fm/usr/uploads/2019/03/601183567.jpg" width=500 alt="LSUN-church线性插值.jpg" /></a>
 
 - LSUN-bedroom
-<br><img src="https://kexue.fm/usr/uploads/2019/03/14194449601.jpg" width=500 alt="LSUN-bedroom线性插值.jpg" /></a>
+<br><img src="https://kexue.fm/usr/uploads/2019/03/1419444960.jpg" width=500 alt="LSUN-bedroom线性插值.jpg" /></a>
 
 ## Reference
 - https://kexue.fm/archives/6409
